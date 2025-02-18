@@ -1,33 +1,35 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile.app
-    container_name: laravel_app
+    image: bitnami/laravel:latest
     restart: unless-stopped
-    working_dir: /var/www
-    volumes:
-      - ./www:/var/www
+    container_name: app
     depends_on:
-      - db  
+      - db
+      - web
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_DATABASE=laravel
+      - DB_PASSWORD=root
+    volumes:
+      - ./www:/app
     networks:
       - laravel_network
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    container_name: laravel_nginx
-    restart: unless-stopped
+    image: nginx:latest
+    container_name: web
     ports:
       - "80:80"
       - "443:443"
+    restart: unless-stopped
     volumes:
-      - ./letsencrypt:/etc/letsencrypt
-      - ./www:/var/www
+      - ./certs:/etc/letsencrypt
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - app
+
     networks:
       - laravel_network
 
@@ -45,6 +47,7 @@ services:
 
 volumes:
   dbdata:
+
 
 networks:
   laravel_network:
