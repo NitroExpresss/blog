@@ -35,6 +35,8 @@ services:
 
   db:
     image: mysql:8.0
+    ports:
+      - "3306:3306"
     container_name: laravel_db
     restart: unless-stopped
     environment:
