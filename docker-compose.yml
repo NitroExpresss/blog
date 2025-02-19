@@ -13,7 +13,7 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_DATABASE=laravel
-      - DB_PASSWORD=root
+      - DB_PASSWORD=g13rv5JhtJ
     volumes:
       - ./www:/app
     networks:
@@ -37,11 +37,11 @@ services:
     image: mysql:8.0
     ports:
       - "3306:3306"
-    container_name: laravel_db
-    restart: unless-stopped
+    container_name: db
+    restart: always
     environment:
       MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: g13rv5JhtJ
     volumes:
       - dbdata:/var/lib/mysql
     networks:
