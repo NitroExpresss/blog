@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Orchid\Screens\EmailSenderScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -13,12 +12,15 @@ use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\Post\PostListScreen;
+use App\Orchid\Screens\Post\PostEditScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
+use App\Orchid\Screens\Post\PostImportScreen;
 use Tabuna\Breadcrumbs\Trail;
 
 /*
@@ -33,7 +35,23 @@ use Tabuna\Breadcrumbs\Trail;
 */
 
 
-Route::screen('email', EmailSenderScreen::class)->name('platform.email');
+Route::screen('posts/import', PostImportScreen::class)
+    ->name('platform.posts.import')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.posts')
+        ->push(__('Импорт постов'), route('platform.posts.import')));
+
+Route::screen('/posts', PostListScreen::class)->name('platform.posts');
+
+Route::screen('posts/create', PostEditScreen::class)->name('platform.post.create');
+
+
+Route::screen('posts/{post}/edit', PostEditScreen::class)
+    ->name('platform.posts.edit')
+    ->breadcrumbs(fn (Trail $trail, $post) => $trail
+        ->parent('platform.posts')
+        ->push($post->title, route('platform.posts.edit', $post)));
+
 
 // Main
 Route::screen('/main', PlatformScreen::class)
