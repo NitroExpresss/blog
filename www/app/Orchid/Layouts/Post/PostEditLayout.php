@@ -33,12 +33,12 @@ class PostEditLayout extends Rows
                 ->required()
                 ->empty('Выберите категорию'),
 
-            Upload::make('post.image')
-                ->title('Загрузите изображения')
-                ->placeholder('Перетащите файлы сюда или нажмите для загрузки')
-                ->acceptedFiles('image/*')
-                ->maxFiles(3)
-                ->multiple()
+            // Upload::make('post.image')
+            //     ->title('Загрузите изображения')
+            //     ->placeholder('Перетащите файлы сюда или нажмите для загрузки')
+            //     ->acceptedFiles('image/*')
+            //     ->maxFiles(3)
+            //     ->multiple()
         ];
     }
 }

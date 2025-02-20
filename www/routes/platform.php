@@ -35,8 +35,6 @@ use Tabuna\Breadcrumbs\Trail;
 */
 
 
-
-
 Route::screen('posts', PostListScreen::class)->name('platform.posts');
 Route::screen('posts/create', PostEditScreen::class)->name('platform.posts.create');
 Route::screen('posts/{post}/edit', PostEditScreen::class)->name('platform.posts.edit');

@@ -24,7 +24,6 @@ class PostEditScreen extends Screen
      */
     public function query(Post $post): array
     {
-        $post->load('attachments');
         return [
             'post' => $post,
         ];
@@ -71,32 +70,18 @@ class PostEditScreen extends Screen
      *
      * @param Post $post
      */
-    public function save(Request $request)
+    public function save(Request $request, )
     {
-        $this->post->fill($request->get('post'))->save();
         $postData = request()->validate([
             'post.title' => 'required|string|max:255',
             'post.description' => 'required|string',
             'post.category_id' => 'required|exists:categories,id',
-            'post.image' => 'nullable|array',
-            'post.image.*' => 'nullable|string',
+            // 'post.image' => 'nullable|array',
+            // 'post.image.*' => 'nullable|string',
         ]);
-
         $postData['post']['slug'] = Str::slug($postData['post']['title']);
-
-        $newImages = request()->input('post.image', []);
-        dd($newImages);
-        $existingImages = $post->image ? json_decode($post->image, true) : []; // If image is null, default to empty array
-
-        // Merge existing and new images
-        $updatedImages = array_merge($existingImages, $newImages);
-
-        // Filter out any empty values and encode the final list of images
-        $post->image = json_encode(array_filter($updatedImages));
-
-        // Save the post
-        $post->fill($postData['post'])->save();
-
+        $this->post->fill($postData['post'])->save();
         Toast::success('Пост успешно сохранен');
+        return redirect()->route('platform.posts');
     }
 }
