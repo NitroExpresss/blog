@@ -8,41 +8,37 @@ use App\Models\Category;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
+use Orchid\Screen\Fields\Upload;
 
 class PostEditLayout extends Rows
 {
-    /**
-     * Элементы разметки экрана.
-     *
-     * @return Field[]
-     */
     public function fields(): array
     {
         return [
             Input::make('post.title')
-                ->type('text')
-                ->max(255)
-                ->required()
-                ->title(__('Заголовок'))
-                ->placeholder(__('Введите заголовок поста')),
+                ->title('Заголовок')
+                ->placeholder('Введите заголовок')
+                ->required(),
 
-            Input::make('post.description')
-                ->type('textarea')
-                ->required()
-                ->title(__('Описание'))
-                ->placeholder(__('Введите описание поста')),
+            TextArea::make('post.description')
+                ->title('Описание')
+                ->placeholder('Введите описание')
+                ->required(),
 
             Select::make('post.category_id')
-                ->title(__('Категория'))
+                ->title('Категория')
                 ->options(Category::all()->pluck('name', 'id')->toArray())
                 ->required()
-                ->placeholder(__('Выберите категорию')),
+                ->empty('Выберите категорию'),
 
-            Input::make('post.image')
-                ->type('text') // TODO: добавить загрузку изображения
-                ->title(__('Изображение'))
-                ->placeholder(__('Введите URL изображения')),
+            Upload::make('post.image')
+                ->title('Загрузите изображения')
+                ->placeholder('Перетащите файлы сюда или нажмите для загрузки')
+                ->acceptedFiles('image/*')
+                ->maxFiles(3)
+                ->multiple()
         ];
     }
 }

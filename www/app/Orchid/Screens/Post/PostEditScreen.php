@@ -6,6 +6,7 @@ namespace App\Orchid\Screens\Post;
 
 use App\Models\Post;
 use App\Orchid\Layouts\Post\PostEditLayout;
+use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
@@ -14,6 +15,7 @@ use Illuminate\Support\Str;
 
 class PostEditScreen extends Screen
 {
+    public $post;
     /**
      * Query data.
      *
@@ -22,9 +24,20 @@ class PostEditScreen extends Screen
      */
     public function query(Post $post): array
     {
+        $post->load('attachments');
         return [
             'post' => $post,
         ];
+    }
+
+    public function description(): ?string
+    {
+        return "Blog posts";
+    }
+
+    public function name(): ?string
+    {
+        return $this->post->exists ? 'Редактирование поста' : 'Создание поста';
     }
 
     /**
@@ -35,7 +48,7 @@ class PostEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('Создать'))
+            Button::make(__('Сохранить'))
                 ->icon('bs.check-circle')
                 ->method('save'),
         ];
@@ -58,16 +71,32 @@ class PostEditScreen extends Screen
      *
      * @param Post $post
      */
-    public function save(Post $post)
+    public function save(Request $request)
     {
-        $data = request()->get('post');
+        $this->post->fill($request->get('post'))->save();
+        $postData = request()->validate([
+            'post.title' => 'required|string|max:255',
+            'post.description' => 'required|string',
+            'post.category_id' => 'required|exists:categories,id',
+            'post.image' => 'nullable|array',
+            'post.image.*' => 'nullable|string',
+        ]);
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
+        $postData['post']['slug'] = Str::slug($postData['post']['title']);
 
-        $post->fill($data)->save();
+        $newImages = request()->input('post.image', []);
+        dd($newImages);
+        $existingImages = $post->image ? json_decode($post->image, true) : []; // If image is null, default to empty array
 
-        Toast::info(__('Post saved successfully.'));
+        // Merge existing and new images
+        $updatedImages = array_merge($existingImages, $newImages);
+
+        // Filter out any empty values and encode the final list of images
+        $post->image = json_encode(array_filter($updatedImages));
+
+        // Save the post
+        $post->fill($postData['post'])->save();
+
+        Toast::success('Пост успешно сохранен');
     }
 }

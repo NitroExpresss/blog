@@ -15,7 +15,6 @@ use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
 class PostListScreen extends Screen
-
 {
     /**
      * Fetch data to be displayed on the screen.
@@ -50,14 +49,18 @@ class PostListScreen extends Screen
      *
      * @return Action[]
      */
-public function commandBar(): iterable
-{
-    return [
-        Link::make(__('Add Post'))
-            ->icon('bs.plus-circle')
-            ->route('platform.post.create'),
-    ];
-}
+    public function commandBar(): iterable
+    {
+        return [
+            Link::make('Добавить пост')
+                ->icon('bs.plus-circle')
+                ->route('platform.posts.create'),
+
+            Link::make('Импортировать посты')
+                ->icon('bs.upload')
+                ->route('platform.posts.import'),
+        ];
+    }
 
     /**
      * The screen's layout elements.
@@ -68,15 +71,22 @@ public function commandBar(): iterable
      */
     public function layout(): iterable
     {
-        
+
         return [
             PostListLayout::class,
         ];
-        
+
     }
 
-    public function showToast(Request $request): void
+    public function remove($id)
     {
-        Toast::warning($request->get('toast', 'Hello, world! This is a toast message.'));
+        $post = Post::find($id);
+        if (!$post) {
+            Toast::error('Пост не найден!');
+        } else {
+            $post->delete();
+            Toast::info('Пост успешно удалён.');
+            return redirect()->route('platform.posts');
+        }
     }
 }

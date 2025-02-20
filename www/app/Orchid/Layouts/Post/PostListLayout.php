@@ -26,42 +26,29 @@ class PostListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::make('title', __('Заголовок'))
-                ->sort()
-                ->cantHide()
-                ->filter(Input::make())
-                ->render(fn (Post $post) => Link::make($post->title)
-                    ->route('platform.posts.edit', $post->id)),
+            TD::make('title', 'Заголовок'),
 
-            TD::make('slug', __('Slug'))
-                ->sort()
-                ->filter(Input::make()),
+            TD::make('slug', 'slug'),
 
-            TD::make('description', __('Description'))
-                ->sort()
-                ->filter(Input::make())
-                ->render(fn (Post $post) => Str::limit($post->description, 50)), // Ограничение по символам
+            TD::make('description', 'Описание')
+                ->render(fn(Post $post) => Str::limit($post->description, 50)),
 
-            TD::make('category_id', __('Категория'))
-                ->sort()
-                ->render(fn (Post $post) => $post->category->name ?? 'No category'),
+            TD::make('category_id', 'Категория')
+                ->render(fn(Post $post) => $post->category->name),
 
-            TD::make('image', __('Картинки'))
-                ->render(fn (Post $post) => $post->image ? $post->image : 'No image'),
-
-            TD::make(__('Actions'))
+            TD::make('Действия')
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')
-                ->render(fn (Post $post) => DropDown::make()
-                    ->icon('bs.three-dots-vertical')
+                ->render(fn(Post $post) => DropDown::make()
+                    ->icon('bs.three-dots')
                     ->list([
-                        Link::make(__('Edit'))
+                        Link::make('Редактировать')
                             ->route('platform.posts.edit', $post->id)
                             ->icon('bs.pencil'),
 
-                        Button::make(__('Delete'))
+                        Button::make('Удалить')
                             ->icon('bs.trash3')
-                            ->confirm(__('Are you sure you want to delete this post?'))
+                            ->confirm('Вы уверены?')
                             ->method('remove', [
                                 'id' => $post->id,
                             ]),
