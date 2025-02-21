@@ -21,14 +21,14 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function detail($slug)
+    public function detail($postSlug)
     {
-        $post = $this->postService->getPostDetails($id);
-        $categories = $this->categoryService->listCategoriesWithPostCount();
-
-        return response()->json([
-            'post' => $post,
-            'categories' => $categories
-        ]);
+        $post = $this->postService->getPostDetail($postSlug);
+        return view('posts.detail', compact('post'));
+    }
+    public function category($categorySlug)
+    {
+        $posts = $this->postService->getByCategoryPaginated($categorySlug,9);
+        return view('posts.category', compact('posts'));
     }
 }

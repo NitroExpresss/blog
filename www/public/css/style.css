@@ -1478,6 +1478,7 @@ textarea.form-control {
 }
 
 .post-entry-horzontal a {
+  min-width: 730px;
   display: table;
 }
 

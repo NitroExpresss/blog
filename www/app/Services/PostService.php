@@ -19,12 +19,12 @@ class PostService
     }
 
 
-    public function getpostDetails(int $id)
+    public function getPostDetail(string $slug)
     {
-        return $this->postRepository->getById($id);
+        return $this->postRepository->getBySlug($slug);
     }
-    public function listPostsByCategory(string $categorySlug, int $perPage = 10)
+    public function getByCategoryPaginated(string $categorySlug, int $perPage = 10)
     {
-        return $this->postRepository->getByCategory($categorySlug, $perPage);
+        return $this->postRepository->getByCategoryPaginated($categorySlug, $perPage);
     }
 }

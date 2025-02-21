@@ -10,7 +10,7 @@ class PostsRepository
     {
         return Post::with('category')->paginate($perPage)->withPath('https://nitroexpress.space/posts');
     }
-    public function getByCategory(string $categorySlug, int $perPage = 10)
+    public function getByCategoryPaginated(string $categorySlug, int $perPage = 10)
     {
         return Post::with('category')
             ->whereHas('category', function ($query) use ($categorySlug) {
@@ -18,12 +18,17 @@ class PostsRepository
             })
             ->paginate($perPage)
             ->withPath("https://nitroexpress.space/{$categorySlug}");
+
     }
 
 
     public function getById(int $id)
     {
         return Post::with('category')->find($id);
+    }
+    public function getBySlug(string $slug)
+    {
+        return Post::with('category')->where('slug', $slug)->firstOrFail();
     }
 
     public function create(array $data)
