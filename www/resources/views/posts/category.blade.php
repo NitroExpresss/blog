@@ -15,7 +15,7 @@
                                 <div class="post-entry-horzontal">
                                     <a href="/{{$post->category->slug}}/{{$post->slug}}">
                                         <div class="image element-animate" data-animate-effect="fadeIn"
-                                            style="background-image: url(images/img_5.jpg);"></div>
+                                            style="background-image: url(images/img_{{ rand(1, 12) }}.jpg);"></div>
                                         <span class="text">
                                             <div class="post-meta">
                                                 <span class="category">{{$post->category->name}}</span>
@@ -83,42 +83,20 @@
                         <h3 class="heading">Popular Posts</h3>
                         <div class="post-entry-sidebar">
                             <ul>
-                                <li>
-                                    <a href="">
-                                        <img src="images/img_2.jpg" alt="Image placeholder" class="mr-4">
-                                        <div class="text">
-                                            <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                            <div class="post-meta">
-                                                <span class="mr-2">March 15, 2018 </span> &bullet;
-                                                <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                @foreach($posts->take(3) as $post)
+                                    <li>
+                                        <a href="/{{$post->category->slug}}/{{$post->slug}}">
+                                            <img src="images/img_{{ rand(1, 12) }}.jpg" alt="Image placeholder" class="mr-4">
+                                            <div class="text">
+                                                <h4>{{ $post->title }}</h4>
+                                                <div class="post-meta">
+                                                    <span class="mr-2">{{$post->created_at->format('F j, Y')}}</span> &bullet;
+                                                    <span class="ml-2"><span class="fa fa-comments"></span>3</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="images/img_4.jpg" alt="Image placeholder" class="mr-4">
-                                        <div class="text">
-                                            <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                            <div class="post-meta">
-                                                <span class="mr-2">March 15, 2018 </span> &bullet;
-                                                <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="images/img_12.jpg" alt="Image placeholder" class="mr-4">
-                                        <div class="text">
-                                            <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                            <div class="post-meta">
-                                                <span class="mr-2">March 15, 2018 </span> &bullet;
-                                                <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                        </a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -127,11 +105,9 @@
                     <div class="sidebar-box">
                         <h3 class="heading">Categories</h3>
                         <ul class="categories">
-                            <li><a href="#">Courses <span>(12)</span></a></li>
-                            <li><a href="#">News <span>(22)</span></a></li>
-                            <li><a href="#">Design <span>(37)</span></a></li>
-                            <li><a href="#">HTML <span>(42)</span></a></li>
-                            <li><a href="#">Web Development <span>(14)</span></a></li>
+                            @foreach ($categories as $category)
+                        <li><a href="/category/{{$category->slug}}">{{$category->name}}<span>({{rand(1,100)}})</span></a></li>
+                    @endforeach
                         </ul>
                     </div>
                     <!-- END sidebar-box -->

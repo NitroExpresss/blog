@@ -126,7 +126,7 @@
                     <h3 class="heading">Categories</h3>
                     <ul class="categories">
                     @foreach ($categories as $category)
-                        <li><a href="/category/{{$category->slug}}">{{$category->name}}<span>({{rand(1,100)}})</span></a></li>
+                        <li><a href="/category/{{$category->slug}}">{{$category->name}}<span>({{$category->posts_count}})</span></a></li>
                     @endforeach
                         </ul>
                     </div>
