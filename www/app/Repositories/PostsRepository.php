@@ -10,6 +10,16 @@ class PostsRepository
     {
         return Post::with('category')->paginate($perPage)->withPath('https://nitroexpress.space/posts');
     }
+    public function getByCategory(string $categorySlug, int $perPage = 10)
+    {
+        return Post::with('category')
+            ->whereHas('category', function ($query) use ($categorySlug) {
+                $query->where('slug', $categorySlug);
+            })
+            ->paginate($perPage)
+            ->withPath("https://nitroexpress.space/{$categorySlug}");
+    }
+
 
     public function getById(int $id)
     {

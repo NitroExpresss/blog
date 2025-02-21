@@ -9,21 +9,19 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     private $postService;
-    private $categoryService;
 
-    public function __construct(PostService $postService, CategoryService $categoryService)
+    public function __construct(PostService $postService)
     {
         $this->postService = $postService;
-        $this->categoryService = $categoryService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $posts = $this->postService->listPosts(8);
         return view('posts.index', compact('posts'));
     }
 
-    public function show($id)
+    public function detail($slug)
     {
         $post = $this->postService->getPostDetails($id);
         $categories = $this->categoryService->listCategoriesWithPostCount();
