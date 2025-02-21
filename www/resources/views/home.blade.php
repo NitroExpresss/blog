@@ -6,11 +6,11 @@
 				<div class="col-md-12">
 					<div class="owl-carousel owl-theme home-slider">
 						<div>
-							<a href="blog-single.html" class="a-block d-flex align-items-center height-lg"
+							<a href="" class="a-block d-flex align-items-center height-lg"
 								style="background-image: url('images/img_1.jpg'); ">
 								<div class="text half-to-full">
 									<div class="post-meta">
-										<span class="category">Lifestyle</span>
+										<span class="category"></span>
 										<span class="mr-2">March 15, 2018 </span> &bullet;
 										<span class="ml-2"><span class="fa fa-comments"></span> 3</span>
 									</div>

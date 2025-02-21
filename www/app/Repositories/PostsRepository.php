@@ -8,7 +8,7 @@ class PostsRepository
 {
     public function getAllPaginated(int $perPage = 10)
     {
-        return Post::with('category')->paginate($perPage);
+        return Post::with('category')->paginate($perPage)->withPath('https://nitroexpress.space/posts');
     }
 
     public function getById(int $id)

@@ -7,7 +7,7 @@
                     <div class="owl-carousel owl-theme home-slider">
                         @foreach($posts->take(3) as $index => $post)
                             <div>
-                                <a href="/{{$post->category->slug}}/{{$post->slug}}" class="a-block d-flex align-items-center height-lg"
+                                <a href="" class="a-block d-flex align-items-center height-lg"
                                     style="background-image: url('images/img_{{ ($index % 10) + 1 }}.jpg');">
                                     <div class="text half-to-full">
                                         <div class="post-meta">

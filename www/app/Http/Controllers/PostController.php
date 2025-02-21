@@ -19,7 +19,7 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $posts = $this->postService->listPosts(5);
+        $posts = $this->postService->listPosts(8);
         return view('posts.index', compact('posts'));
     }
 
