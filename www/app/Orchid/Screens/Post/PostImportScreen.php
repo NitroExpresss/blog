@@ -6,7 +6,9 @@ namespace App\Orchid\Screens\Post;
 
 use App\Models\Post;
 use App\Models\Category;
+use Orchid\Attachment\Models\Attachment;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\Attach;
 use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
@@ -15,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use SimpleXMLElement;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PostImportScreen extends Screen
 {
@@ -37,7 +40,7 @@ class PostImportScreen extends Screen
     {
         return [
             Layout::rows([
-                Upload::make('xml_file')
+                Attach::make('xml_file')
                     ->title('Выберите XML файл')
                     ->placeholder('Загрузите XML с постами')
                     ->maxFiles(1)
@@ -55,49 +58,37 @@ class PostImportScreen extends Screen
      */
     public function importPosts(Request $request)
     {
-        if (!$request->hasFile('xml_file')) {
-            Toast::error('Файл не загружен или превышает лимит.');
-            return;
-        }
-        $file = $request->file('xml_file');
-        if (!$file->isValid() || $file->getClientOriginalExtension() !== 'xml') {
-            Toast::error('Ошибка загрузки: неверный формат или поврежденный файл.');
-            return;
-        }
-        dd($request);
-        $file = $request->file('xml_file');
 
-        if (!$file) {
-            Toast::error('Файл не загружен.');
-            return;
-        }
+        $path = Attachment::find($request->input('xml_file'))->firstOrFail()->physicalPath();
+        $contents = Storage::disk('public')->get($path);
 
-        $path = $file->store('uploads'); // Временное сохранение
-        $xmlContent = Storage::get($path);
-        $xml = new SimpleXMLElement($xmlContent);
+        $xml = simplexml_load_string($contents);
 
-        foreach ($xml->item0 as $categoryItem) {
-            $categoryName = (string) $categoryItem->Name; // Имя категории
+        $json = json_encode($xml);
 
-            // Найти или создать категорию
-            $category = Category::firstOrCreate(['name' => $categoryName]);
-
-            foreach ($categoryItem->Elements->children() as $postItem) {
-                Post::create([
-                    'title'       => (string) $postItem->Name,
-                    'slug'        => Str::slug((string) $postItem->Name),
-                    'description' => (string) $postItem->Description,
-                    'category_id' => $category->id,
-                    'image'       => json_encode([
-                        (string) $postItem->Pict1,
-                        (string) $postItem->Pict2
-                    ]), // Сохраняем как JSON
-                ]);
+        $array = json_decode($json, true);
+        foreach ($array as $categoryItem) {
+            $categoryName = (string) $categoryItem['Category']['Name'];
+            $category = Category::updateOrCreate(
+                ['name' => $categoryName],
+                ['slug' => Str::slug((string) $categoryItem['Category']['Name'])]);
+            foreach ($categoryItem['Category']['Elements'] as $postItem) {
+                Post::updateOrCreate(
+                    [
+                        'slug' => Str::slug((string) $postItem['Name']),
+                    ],
+                    [
+                        'title' => (string) $postItem['Name'],
+                        'category_id' => $category->id,
+                        'description' => (string) $postItem['Description'],
+                    ]
+                );
             }
         }
 
-        Storage::delete($path); // Удаляем файл после обработки
-
+        Storage::delete($path);
+        
         Toast::success('Посты успешно импортированы.');
+        return redirect()->route('platform.posts');
     }
 }
