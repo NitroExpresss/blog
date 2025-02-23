@@ -35,10 +35,7 @@ use Tabuna\Breadcrumbs\Trail;
 */
 
 
-Route::screen('posts', PostListScreen::class)->name('platform.posts');
-Route::screen('posts/create', PostEditScreen::class)->name('platform.posts.create');
-Route::screen('posts/{post}/edit', PostEditScreen::class)->name('platform.posts.edit');
-Route::screen('posts/import', PostImportScreen::class)->name('platform.posts.import');
+
 
 // Main
 Route::screen('/main', PlatformScreen::class)
@@ -109,5 +106,10 @@ Route::screen('/examples/layouts', ExampleLayoutsScreen::class)->name('platform.
 Route::screen('/examples/grid', ExampleGridScreen::class)->name('platform.example.grid');
 Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.example.charts');
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
+
+Route::screen('posts', PostListScreen::class)->name('platform.posts');
+Route::screen('posts/create', PostEditScreen::class)->name('platform.posts.create');
+Route::screen('posts/{post}/edit', PostEditScreen::class)->name('platform.posts.edit');
+Route::screen('posts/import', PostImportScreen::class)->name('platform.posts.import');
 
 // Route::screen('idea', Idea::class, 'platform.screens.idea');
