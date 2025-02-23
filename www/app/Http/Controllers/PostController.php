@@ -21,10 +21,10 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function detail($postSlug)
+    public function detail($_,$postSlug)
     {
-        $post = $this->postService->getPostDetail($postSlug);
-        return view('posts.detail', compact('post'));
+        $data = $this->postService->getPostDetail($postSlug);
+        return view('posts.detail', compact('data'));
     }
     public function category($categorySlug)
     {

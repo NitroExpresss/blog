@@ -13,7 +13,7 @@
                         <div class="col-md-12">
                             @foreach ($data['posts'] as $post)
                                 <div class="post-entry-horzontal">
-                                    <a href="/{{$post->category->slug}}/{{$post->slug}}">
+                                    <a href="/posts/{{$post->category->slug}}/{{$post->slug}}">
                                         <div class="image element-animate" data-animate-effect="fadeIn"
                                             style="background-image: url(/images/img_{{ rand(1, 12) }}.jpg);"></div>
                                         <span class="text">
@@ -64,7 +64,7 @@
                     <!-- END sidebar-box -->
                     <div class="sidebar-box">
                         <div class="bio text-center">
-                            <img src="images/person_1.jpg" alt="Image Placeholder" class="img-fluid">
+                            <img src="/images/person_1.jpg" alt="Image Placeholder" class="img-fluid">
                             <div class="bio-body">
                                 <h2>Meagan Smith</h2>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem facilis sunt

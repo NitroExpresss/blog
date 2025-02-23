@@ -20,7 +20,7 @@ class PostsRepository
                 $query->where('slug', $categorySlug);
             })
             ->paginate($perPage)
-            ->withPath("https://nitroexpress.space/{$categorySlug}");
+            ->withPath("https://nitroexpress.space/posts/{$categorySlug}");
         return ['category' => $category, 'posts' => $posts];
     }
 
@@ -31,7 +31,13 @@ class PostsRepository
     }
     public function getBySlug(string $slug)
     {
-        return Post::with('category')->where('slug', $slug)->firstOrFail();
+
+        $post = Post::with('category')->where('slug', $slug)->firstOrFail();
+        $relatedPosts = Post::where('category_id', $post->category_id)
+        ->inRandomOrder()
+        ->limit(3)
+        ->get();
+        return ['related' => $relatedPosts, 'post' => $post];
     }
 
     public function create(array $data)
