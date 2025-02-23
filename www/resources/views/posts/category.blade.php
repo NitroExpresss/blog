@@ -4,14 +4,14 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h2 class="mb-4">Category: {{$posts[0]->category->name}}</h2>
+                    <h2 class="mb-4">Category: {{$data['category']->name}}</h2>
                 </div>
             </div>
             <div class="row blog-entries">
                 <div class="col-md-12 col-lg-8 main-content">
                     <div class="row mb-5 mt-5">
                         <div class="col-md-12">
-                            @foreach ($posts as $post)
+                            @foreach ($data['posts'] as $post)
                                 <div class="post-entry-horzontal">
                                     <a href="/{{$post->category->slug}}/{{$post->slug}}">
                                         <div class="image element-animate" data-animate-effect="fadeIn"
@@ -33,12 +33,14 @@
                         <div class="col-md-12 text-center">
                             <nav aria-label="Page navigation" class="text-center">
                                 <ul class="pagination">
-                                    @foreach ($posts->linkCollection() as $page)
-                                        <li
-                                            class="page-item {{ $page['active'] ? 'active' : '' }} {{ $page['url'] ? '' : 'disabled' }}">
-                                            <a class="page-link" href="{{ $page['url'] ?? '#' }}">{!! $page['label'] !!}</a>
-                                        </li>
-                                    @endforeach
+                                    @if ($data['posts']->total() > $data['posts']->perPage())
+                                        @foreach ($data['posts']->linkCollection() as $page)
+                                            <li
+                                                class="page-item {{ $page['active'] ? 'active' : '' }} {{ $page['url'] ? '' : 'disabled' }}">
+                                                <a class="page-link" href="{{ $page['url'] ?? '#' }}">{!! $page['label'] !!}</a>
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </nav>
                         </div>
@@ -83,7 +85,7 @@
                         <h3 class="heading">Popular Posts</h3>
                         <div class="post-entry-sidebar">
                             <ul>
-                                @foreach($posts->take(3) as $post)
+                                @foreach($data['posts']->take(3) as $post)
                                     <li>
                                         <a href="/{{$post->category->slug}}/{{$post->slug}}">
                                             <img src="images/img_{{ rand(1, 12) }}.jpg" alt="Image placeholder" class="mr-4">
@@ -106,8 +108,8 @@
                         <h3 class="heading">Categories</h3>
                         <ul class="categories">
                             @foreach ($categories as $category)
-                        <li><a href="/category/{{$category->slug}}">{{$category->name}}<span>({{rand(1,100)}})</span></a></li>
-                    @endforeach
+                                <li><a href="{{$category->slug}}">{{$category->name}}<span>({{rand(1, 100)}})</span></a></li>
+                            @endforeach
                         </ul>
                     </div>
                     <!-- END sidebar-box -->

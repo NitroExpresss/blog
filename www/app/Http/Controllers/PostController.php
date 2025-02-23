@@ -28,7 +28,7 @@ class PostController extends Controller
     }
     public function category($categorySlug)
     {
-        $posts = $this->postService->getByCategoryPaginated($categorySlug,9);
-        return view('posts.category', compact('posts'));
+        $data = $this->postService->getByCategoryPaginated($categorySlug,9);
+        return view('posts.category', compact('data'));
     }
 }
