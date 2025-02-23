@@ -15,7 +15,7 @@
                                 <div class="post-entry-horzontal">
                                     <a href="/{{$post->category->slug}}/{{$post->slug}}">
                                         <div class="image element-animate" data-animate-effect="fadeIn"
-                                            style="background-image: url(images/img_{{ rand(1, 12) }}.jpg);"></div>
+                                            style="background-image: url(/images/img_{{ rand(1, 12) }}.jpg);"></div>
                                         <span class="text">
                                             <div class="post-meta">
                                                 <span class="category">{{$post->category->name}}</span>
@@ -88,7 +88,7 @@
                                 @foreach($data['posts']->take(3) as $post)
                                     <li>
                                         <a href="/{{$post->category->slug}}/{{$post->slug}}">
-                                            <img src="images/img_{{ rand(1, 12) }}.jpg" alt="Image placeholder" class="mr-4">
+                                            <img src="/images/img_{{ rand(1, 12) }}.jpg" alt="Image placeholder" class="mr-4">
                                             <div class="text">
                                                 <h4>{{ $post->title }}</h4>
                                                 <div class="post-meta">
@@ -108,7 +108,7 @@
                         <h3 class="heading">Categories</h3>
                         <ul class="categories">
                             @foreach ($categories as $category)
-                                <li><a href="{{$category->slug}}">{{$category->name}}<span>({{rand(1, 100)}})</span></a></li>
+                                <li><a href="{{$category->slug}}">{{$category->name}}<span>({{$category->posts_count}})</span></a></li>
                             @endforeach
                         </ul>
                     </div>

@@ -7,7 +7,7 @@
                     <div class="owl-carousel owl-theme home-slider">
                         @foreach($posts->take(3) as $index => $post)
                             <div>
-                                <a href="/{{$post->category->slug}}/{{$post->slug}}" class="a-block d-flex align-items-center height-lg"
+                                <a href="/posts/{{$post->category->slug}}/{{$post->slug}}" class="a-block d-flex align-items-center height-lg"
                                     style="background-image: url('images/img_{{ ($index % 10) + 1 }}.jpg');">
                                     <div class="text half-to-full">
                                         <div class="post-meta">
@@ -40,7 +40,7 @@
                     <div class="row">
                         @foreach($posts as $post)
                             <div class="col-md-6">
-                                <a href="/{{$post->category->slug}}/{{$post->slug}}" class="blog-entry element-animate" data-animate-effect="fadeIn">
+                                <a href="/posts/{{$post->category->slug}}/{{$post->slug}}" class="blog-entry element-animate" data-animate-effect="fadeIn">
                                     <img src="images/img_{{ rand(1, 12) }}.jpg" alt="Image placeholder">
                                     <div class="blog-content-body">
                                         <div class="post-meta">
@@ -105,7 +105,7 @@
                             <ul>
                                 @foreach($posts->take(3) as $post)
                                     <li>
-                                        <a href="/{{$post->category->slug}}/{{$post->slug}}">
+                                        <a href="/posts/{{$post->category->slug}}/{{$post->slug}}">
                                             <img src="images/img_{{ rand(1, 12) }}.jpg" alt="Image placeholder" class="mr-4">
                                             <div class="text">
                                                 <h4>{{ $post->title }}</h4>
@@ -126,7 +126,7 @@
                     <h3 class="heading">Categories</h3>
                     <ul class="categories">
                     @foreach ($categories as $category)
-                        <li><a href="/category/{{$category->slug}}">{{$category->name}}<span>({{$category->posts_count}})</span></a></li>
+                        <li><a href="/posts/{{$category->slug}}">{{$category->name}}<span>({{$category->posts_count}})</span></a></li>
                     @endforeach
                         </ul>
                     </div>

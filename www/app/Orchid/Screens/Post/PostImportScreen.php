@@ -71,7 +71,8 @@ class PostImportScreen extends Screen
             $categoryName = (string) $categoryItem['Category']['Name'];
             $category = Category::updateOrCreate(
                 ['name' => $categoryName],
-                ['slug' => Str::slug((string) $categoryItem['Category']['Name'])]);
+                ['slug' => Str::slug((string) $categoryItem['Category']['Name'])]
+            );
             foreach ($categoryItem['Category']['Elements'] as $postItem) {
                 Post::updateOrCreate(
                     [
@@ -87,7 +88,7 @@ class PostImportScreen extends Screen
         }
 
         Storage::delete($path);
-        
+
         Toast::success('Посты успешно импортированы.');
         return redirect()->route('platform.posts');
     }
